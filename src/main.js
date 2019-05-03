@@ -8,12 +8,13 @@ import Vue from 'vue'; // 在 webpack.config.js 中的 resolve 节点修改 引�
 
 
 // 按需导入 需要用到的 MintUI 中的组件
-import { Header, Swipe, SwipeItem } from 'mint-ui';
+import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
 // 样式文件需要单独导入
 import 'mint-ui/lib/style.css'; // 省略 node_modules 目录，因为会自动到这个目录下去找
 Vue.component(Header.name, Header); // 手动将导入的组件注册为【全局组件】
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button);
 
 
 // 引入MUI的样式文件
@@ -36,6 +37,17 @@ import VueResource from 'vue-resource';
 // 手动安装
 Vue.use(VueResource);
 // 之后 ViewModel 实例对象就会挂载了一个 $http 对象用于发送数据请求
+
+// 全局配置请求地址的 根地址（数据接口的根域名），注意是在 安装了 VueResource 之后才可以配置
+Vue.http.options.root='https://www.easy-mock.com/mock/5ccb061ed905ac333e80c01e/vuestudy';
+
+
+// 导入 时间格式化插件 （先安装，DOS命令运行： cnpm i moment -S)
+import moment from 'moment';
+// 定时 时间格式化 的全局过滤器
+Vue.filter("dateFormat", function(dateStr, pattern="YYYY-MM-DD HH:mm:ss") {
+  return moment(dateStr).format(pattern);
+});
 
 
 

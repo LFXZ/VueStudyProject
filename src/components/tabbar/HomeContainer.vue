@@ -9,9 +9,9 @@
     
     <!-- 六宫格区域改造工程 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
-      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newslist">
         <img src="../../images/menu1.jpg">
-        <div class="mui-media-body">新闻资讯</div></a></li>
+        <div class="mui-media-body">新闻资讯</div></router-link></li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
         <img src="../../images/menu2.jpg">
         <div class="mui-media-body">图片分享</div></a></li>
@@ -49,7 +49,7 @@
     methods: {
       getLunbotu() {
         // 获取轮播图数据的方法
-        this.$http.get("https://www.easy-mock.com/mock/5ccb061ed905ac333e80c01e/vuestudy/getLunbotu").then(result => {
+        this.$http.get("api/getlunbotu").then(result => {
           // console.log(result.body);
           if (result.body.status === 0) {
             this.lunbotuList = result.body.message;

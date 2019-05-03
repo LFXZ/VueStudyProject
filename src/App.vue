@@ -45,7 +45,8 @@ export default {
 
 <style scoped>
 	.app-container {
-		margin-top: 40px;
+		padding-top: 40px;
+		padding-bottom: 50px;
 		overflow-x: hidden;  /* 设置水平方向不能出现滚动条 */ 
 	}
 
