@@ -31,6 +31,7 @@ module.exports = {
 			{ test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
 			{ test: /\.css$/, use: ['style-loader', 'css-loader'] }, // 注意顺序：加载器的执行顺序是从后往前的，先由css加载器进行处理再由style加载器进行处理
 			{ test: /\.(ttf|woff|woff2|eot|svg)$/, use: 'url-loader' }, // 处理字体的加载器
+			{ test: /\.(jpg|png|jpeg|gif)$/, use: 'url-loader' }, // 处理图片的加载器也是 url-loader
 		]
 	}
 
