@@ -68,21 +68,23 @@
 
 ### 绘制 图片列表 组件页面结构并美化样式
 1. 顶部的滑动条制作
-  1.1 需要借助 MUI 的 tab-top-webview-main.html 
-  1.2 需要把 slider 区域的 mui-fullscreen 类去掉
-  1.3 滑动条无法正常触发滑动，通过检查官方文档，发现需要 初始化一个 JS 组件
-    1.3.1 导入 mui.js 文件
-    1.3.2 调用官方提供的方式 初始化控件：
-    ```
+
+- 需要借助 MUI 的 tab-top-webview-main.html 
+- 需要把 slider 区域的 mui-fullscreen 类去掉
+- 滑动条无法正常触发滑动，通过检查官方文档，发现需要 初始化一个 JS 组件
+  - 导入 mui.js 文件
+  - 调用官方提供的方式 初始化控件：
+
+  ```
       mui('.mui-scroll-wrapper').scroll({
         deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
       });
-    ```
-  1.4 但是在初始化 滚动条 控件的时候，导入的 mui.js ，控制台报错：`Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode`
-    1.4.1 经过合理的推测，觉得 可能是 mui.js 中用到了 'caller', 'callee', and 'arguments' 这些非严格模式的代码，但是 webpack 在打包生成 bundle.js 文件的时候，默认是 启用 严格模式的，所以这两者冲突了
-    1.4.2 解决方案：1. 把 mui.js 中的非严格模式的代码改掉，但是明显这是不现实的； 2. 把 webpack 打包时候的严格模式禁用掉
-    1.4.3 最终是使用 第二种方式，使用 transform-remove-strict-mode 这个插件 将 webpack 打包的时候默认启用的严格模式 禁用
-  1.5 第一次 进入图片分享页面的时候，滑动条无法正常工作，经过认真的分析，发现 如果要初始化滑动条，必须要等到 DOM 元素加载完毕，所以 要将 初始化控件 的代码 搬到组件的 mounted 生命周期函数中
-  1.6 当滑动条 调试OK后，tabbar 无法正常工作了，事实上 应该是 包内部 每个 tabbar 的类： mui-tab-item 类名冲突了的问题，这时，我们可以 把每个 tabbar 按钮的 类样式中 'mui-tab-item'类 改一个名字，将所有这个类对应的样式复制到 组件的 style 标签中
+  ```
+- 但是在初始化 滚动条 控件的时候，导入的 mui.js ，控制台报错：`Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode`
+  - 经过合理的推测，觉得 可能是 mui.js 中用到了 'caller', 'callee', and 'arguments' 这些非严格模式的代码，但是 webpack 在打包生成 bundle.js 文件的时候，默认是 启用 严格模式的，所以这两者冲突了
+  - 解决方案：1. 把 mui.js 中的非严格模式的代码改掉，但是明显这是不现实的； 2. 把 webpack 打包时候的严格模式禁用掉
+  - 最终是使用 第二种方式，使用 transform-remove-strict-mode 这个插件 将 webpack 打包的时候默认启用的严格模式 禁用
+- 第一次 进入图片分享页面的时候，滑动条无法正常工作，经过认真的分析，发现 如果要初始化滑动条，必须要等到 DOM 元素加载完毕，所以 要将 初始化控件 的代码 搬到组件的 mounted 生命周期函数中
+- 当滑动条 调试OK后，tabbar 无法正常工作了，事实上 应该是 包内部 每个 tabbar 的类： mui-tab-item 类名冲突了的问题，这时，我们可以 把每个 tabbar 按钮的 类样式中 'mui-tab-item'类 改一个名字，将所有这个类对应的样式复制到 组件的 style 标签中
 
 2. 制作底部的图片列表
