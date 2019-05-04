@@ -40,6 +40,8 @@ Vue.use(VueResource);
 
 // 全局配置请求地址的 根地址（数据接口的根域名），注意是在 安装了 VueResource 之后才可以配置
 Vue.http.options.root='https://www.easy-mock.com/mock/5ccb061ed905ac333e80c01e/vuestudy';
+// 全局设置 post 请求 表单数据组织格式， application/x-www-form-urlencoded
+Vue.http.options.emulateJSON = true;
 
 
 // 导入 时间格式化插件 （先安装，DOS命令运行： cnpm i moment -S)
