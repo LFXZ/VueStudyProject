@@ -10,6 +10,11 @@ import ShopcarContainer from './components/tabbar/ShopcarContainer.vue';
 import NewsList from './components/news/NewsList.vue';
 import NewsInfo from './components/news/NewsInfo.vue';
 import PhotoList from './components/photos/PhotoList.vue';
+import PhotoInfo from './components/photos/PhotoInfo.vue';
+import GoodsList from './components/goods/GoodsList.vue';
+import GoodsInfo from './components/goods/GoodsInfo.vue';
+import GoodsDesc from './components/goods/GoodsDesc.vue';
+import GoodsComment from './components/goods/GoodsComment.vue';
 
 
 // 创建路由对象
@@ -22,7 +27,12 @@ var router = new VueRouter({
     { path: '/shopcar', component: ShopcarContainer },
     { path: '/home/newslist', component: NewsList },
     { path: '/home/newsinfo/:id', component: NewsInfo }, // :id 表示这是传进来的一个参数
-    { path: '/home/photolist', component: PhotoList }
+    { path: '/home/photolist', component: PhotoList },
+    { path: '/home/photoinfo/:id', component: PhotoInfo },
+    { path: '/home/goodslist', component: GoodsList },
+    { path: '/home/goodsinfo/:id', component: GoodsInfo, name: 'goodsinfo' },
+    { path: '/home/goodsdesc/:id', component: GoodsDesc, name: 'goodsdesc' },
+    { path: '/home/goodscomment/:id', component: GoodsComment, name: 'goodscomment' }
   ],
   linkActiveClass: 'mui-active' // 指定当前路由高亮的类样式，默认为 router-link-active
 });

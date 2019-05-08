@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 顶部 header 区域 -->
-		<mt-header fixed title="个人Vue项目"></mt-header>
+		<mt-header fixed title="个人Vue项目" class="header"></mt-header>
 
     <!-- 中间内容区域 -->
 		<transition>
@@ -20,7 +20,7 @@
 			</router-link>
 			<router-link class="mui-tab-item1" to="/shopcar">
 				<span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-					<span class="mui-badge">0</span>
+					<span class="mui-badge" id='badge'>0</span>
 				</span>
 				<span class="mui-tab-label">购物车</span>
 			</router-link>
@@ -49,6 +49,10 @@ export default {
 		padding-bottom: 50px;
 		overflow-x: hidden;  /* 设置水平方向不能出现滚动条 */ 
 	}
+
+  .header {
+    z-index: 999;  /* 设置标题的层级在最上面 */
+  }
 
 	
 	/* 组件切换的动画效果 */

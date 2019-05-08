@@ -7,14 +7,18 @@ import Vue from 'vue'; // 在 webpack.config.js 中的 resolve 节点修改 引�
 // 还要一种解决方式，既保持使用 import Vue from 'vue' 的方式，也不用在 webpack.config.js 中添加 resolve 节点-----------> 组件写入到 .vue 文件中，使用 vm 实例的 render 函数进行渲染(因为不能再以标签的形式引用了)
 
 
-// 按需导入 需要用到的 MintUI 中的组件
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
+/*// 按需导入 需要用到的 MintUI 中的组件
+import { Header, Swipe, SwipeItem, Button, Lazyload } from 'mint-ui';
 // 样式文件需要单独导入
 import 'mint-ui/lib/style.css'; // 省略 node_modules 目录，因为会自动到这个目录下去找
 Vue.component(Header.name, Header); // 手动将导入的组件注册为【全局组件】
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
+Vue.use(Lazyload);*/
+import MintUI from 'mint-ui';
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI);
 
 
 // 引入MUI的样式文件
@@ -51,6 +55,10 @@ Vue.filter("dateFormat", function(dateStr, pattern="YYYY-MM-DD HH:mm:ss") {
   return moment(dateStr).format(pattern);
 });
 
+
+// 导入 缩略图 vue-preview 插件 并 安装
+import VuePreview from 'vue-preview';
+Vue.use(VuePreview);
 
 
 // 导入 app 组件（在 html 页面中使用的 都是在这里引入）
