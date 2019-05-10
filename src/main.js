@@ -61,6 +61,131 @@ import VuePreview from 'vue-preview';
 Vue.use(VuePreview);
 
 
+// 导入 vuex
+import Vuex from  'vuex';
+// 注册
+Vue.use(Vuex);
+
+// 每次在一打开网站的时候，肯定会执行 main.js ，在一打开网站的时候，先从 本地存储中 将 购物车数据读取出来，放到 store 中，读取到 需要转为 数组，不存在 car 就是一个空数组
+var car = JSON.parse(localStorage.getItem('car') || '[]');
+
+// 创建 Vuex.Store 实例
+var store = new Vuex.Store({
+	state: {
+		car: car // 将购物车中商品的数据，用一个数组存储起来，在 car 数组中，存储一些商品的对象，这些商品对象可以暂时设计成： { id:商品的id, count:要购买的数量, price:商品的单价, selected: true }
+	},
+	mutations: {
+		addToCar(state, goodsinfo) { // 第一个参数固定是 state，第二个参数是 commit 传递进来的唯一的参数
+			// 点击 加入购物车，把商品信息，保存到 store 上的 car 上
+			// 分析：
+			// 1. 如果购物车中，之前就有这个对应的商品，则只需要更新数量 就可以
+			// 2. 如果没有，就把 商品对象 push 到 car 数组中
+
+			// 标识商品有没有找到，默认是 没有找到
+			var flag = false;
+
+			state.car.some(item => { // some 方法是 遍历，找到满足条件的 就停止
+				if (item.id === goodsinfo.id) {
+					item.count = parseInt(item.count) + parseInt(goodsinfo.count); // 数组的加减，为防止中间的过程中出现意外的转变为字符串拼接，最好使用 parseInt ， 比如 如果这里的 商品的数量 如果是手动输入的时候 就会被变为 字符串 导致出错
+					flag = true; // 标识商品找到了
+					return true; // 还需要手动 return 一下值的
+				}
+			});
+
+			if (!flag) {
+				state.car.push(goodsinfo);
+			}
+
+
+			// 当更新完 car 之后，就将 car 数组 存储到本地的 localStorage 中
+			localStorage.setItem('car', JSON.stringify(state.car));
+
+		},
+
+		updateGoodsInfo(state, goodsinfo) {
+			// 更新购物车中 商品的数量信息
+			// 商品 肯定之前在 store 中就已经存在了，这里只要遍历 store 中的商品对象，找到对应id 的商品，修改其 count 即可
+			state.car.some(item => {
+				if (item.id == goodsinfo.id) {
+					item.count = parseInt(goodsinfo.count);
+					return true; // 结束遍历
+				}
+			});
+
+			// 当更新完 car 之后，就将 car 数组 存储到本地的 localStorage 中
+			localStorage.setItem('car', JSON.stringify(state.car));
+		},
+
+		removeFromCar(state, id) {
+			// 从 store 中 删除 对应 id 的数据
+			state.car.some((item, i) => {
+				if (item.id == id) {
+					state.car.splice(i, 1); // 从 i  的位置开始 删掉一个元素
+					return true; // 结束遍历
+				}
+			});
+
+			// 当更新完 car 之后，就将 car 数组 存储到本地的 localStorage 中
+			localStorage.setItem('car', JSON.stringify(state.car));
+		},
+
+		changeGoodsSelected(state, info) {
+			state.car.some(item => {
+				if (item.id == info.id) {
+					item.selected = info.selected;
+				}
+			});
+
+			// 当更新完 car 之后，就将 car 数组 存储到本地的 localStorage 中
+			localStorage.setItem('car', JSON.stringify(state.car));
+		}
+
+	},
+	getters: {
+		// getters 里面的方法 相当于 计算属性（计算属性也就是说 只要值发生改变 引用这个值的都会自动更新） 也 相当于 filters过滤器
+		getAllCount(state) { // 第一个参数也是固定为 state
+			var c = 0;
+			state.car.forEach(item => {
+				c += parseInt(item.count);
+			});
+			return c;
+		},
+
+		getGoodsCount(state) {
+			var o = {};
+			state.car.forEach(item => {
+				o[item.id] = item.count;
+			});
+			return o;
+		},
+
+		getGoodsSelected(state) {
+			var o = {};
+			state.car.forEach(item => {
+				o[item.id] = item.selected;
+			});
+			return o;
+		},
+
+		// 获取 勾选商品的 数量 和 总价
+		getGoodsCountAndAmount(state) {
+			var o = {
+				count: 0, // 所有被选中商品的 总数量
+				amount: 0 // 所有被选中商品的 总价
+			};
+			state.car.forEach(item => {
+				if (item.selected == true) {
+					o.count += parseInt(item.count);
+					o.amount += item.price * item.count;
+				}
+			});
+			return o;
+		}
+
+	}
+});
+
+
 // 导入 app 组件（在 html 页面中使用的 都是在这里引入）
 import app from './App.vue';
 
@@ -78,6 +203,9 @@ var vm = new Vue({
 	// render函数的简写：
 	render: c => c(app),
 
-  router // 将路由对象挂载到 vm 对象上
+  router, // 将路由对象挂载到 vm 对象上
+
+
+  store // 将 store 对象 挂载到 vm 实例上
 
 });

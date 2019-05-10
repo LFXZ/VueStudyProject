@@ -1,7 +1,11 @@
 <template>
   <div class="app-container">
     <!-- 顶部 header 区域 -->
-		<mt-header fixed title="个人Vue项目" class="header"></mt-header>
+		<mt-header fixed title="个人Vue项目" class="header">
+      <span slot="left" @click="goBack" v-show="flag">
+        <mt-button icon="back">返回</mt-button>
+      </span>  
+    </mt-header>
 
     <!-- 中间内容区域 -->
 		<transition>
@@ -20,7 +24,7 @@
 			</router-link>
 			<router-link class="mui-tab-item1" to="/shopcar">
 				<span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-					<span class="mui-badge" id='badge'>0</span>
+					<span class="mui-badge" id='badge'>{{ this.$store.getters.getAllCount }}</span>
 				</span>
 				<span class="mui-tab-label">购物车</span>
 			</router-link>
@@ -37,8 +41,32 @@
 export default {
     data() {
         return {
-            msg: '这是app组件中的内容'
+            msg: '这是app组件中的内容',
+            flag: false // 表示 返回按钮 是否显示，默认是 不显示
         }
+    },
+
+    created() {
+      // 刚以进来页面就 判断一下是不是首页，是首页则隐藏返回按钮，不是首页则显示返回按钮（因为存在刷新页面时不在首页，但是也没有发生路由地址的改变，从而 返回按钮也没有显示的情况）
+      this.flag = this.$route.path == '/home' ? false : true;
+    },
+
+    methods: {
+      goBack() {
+        // 点击后退
+        this.$router.go(-1);
+      }
+    },
+
+    watch: {
+      // 监听 路由地址的变化，如果 路由地址 变为 首页，则应该隐藏 返回按钮
+      '$route.path': function(newVal) {
+        if (newVal == '/home') {
+          this.flag = false;
+        } else {
+          this.flag = true;
+        }
+      }
     }
 }
 </script>

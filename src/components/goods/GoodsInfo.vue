@@ -123,6 +123,14 @@
       addIntoShopCart() {
         // 小球显示切换
         this.ballFlag = !this.ballFlag;
+
+        // { id:商品的id, count:要购买的数量, price:商品的单价, selected:true }
+        // 拼接出一个 要保存到 vuex 上的 商品对象
+        var goodsinfo = { id: this.id, count: this.selectedCount, price: this.goodsinfo.sell_price, selected: true };
+
+        // 调用 store 中 mutation 中的方法，实现 共享数据的操作
+        this.$store.commit('addToCar', goodsinfo);
+        
       },
 
       // 半场动画钩子函数

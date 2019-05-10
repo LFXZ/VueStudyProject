@@ -5,7 +5,7 @@ var path = require('path');
 // 引入 html-webpack-plugin ，接收到的是一个构造函数
 var htmlWebpackPlugin = require('html-webpack-plugin');
 // 引入 vue-loader 伴生的 VueLoaderPlugin，然后要new处理一个插件实例 vue-loader 才能正常使用
-var VueLoaderPlugin = require('vue-loader/lib/plugin.js');
+var VueLoaderPlugin = require('vue-loader/lib/plugin.js'); // 注意：如果这里写成 node_modules/vue-loader/lib/plugin.js 是错误的，这里 node_modules不能加上，而 import 语句是 node_modules 加上也可以 不加上也可以
 
 // 使用的 node 的语法
 module.exports = {
